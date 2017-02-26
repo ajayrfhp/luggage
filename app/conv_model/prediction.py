@@ -24,8 +24,8 @@ def predict_class(img):
 	from nn import *
 	rel_path = os.path.dirname(os.path.abspath(__file__))
 	sess.run(tf.global_variables_initializer())
-	saver = tf.train.Saver()
-	saver.restore(sess,rel_path +"/model3/model3.ckpt")
+	saver = tf.train.Saver(tf.trainable_variables())
+	saver.restore(sess,rel_path +"/model4/model4.ckpt")
 	#saver = tf.train.import_meta_graph(rel_path + '/data/cnn-2.ckpt.meta')
 	#saver.restore(sess, rel_path + "/data/cnn-2.ckpt")
 	random_state = 42
@@ -42,7 +42,6 @@ def predict_class(img):
 	# CALCULUATE PREDICTION
 	pred = y_conv.eval(session = sess,feed_dict={x:img})
 	sess.close()
-
 	
 	for i in range(4):
 		if(pred[0][i] == max(pred[0])):

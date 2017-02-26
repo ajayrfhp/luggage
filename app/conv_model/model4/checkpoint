@@ -1,0 +1,2 @@
+model_checkpoint_path: "/tmp/model4/model4.ckpt"
+all_model_checkpoint_paths: "/tmp/model4/model4.ckpt"

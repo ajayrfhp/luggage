@@ -41,13 +41,13 @@ b_conv1 = bias_variable([32])
 
 W_conv2 = weight_variable([5,5,32,64])
 b_conv2 = bias_variable([64])
-
+    
 
 W_fc = weight_variable([16*16*64, 1024])
-b_fc = bias_variable([1024])
-
+b_fc = bias_variable([1024]) 
+    
 x_image = tf.reshape(x,[-1,64,64,1])
-
+    
 # FIRST CONVOLUTIONAL LAYER
 h_conv1 = tf.nn.relu(conv_layer(x_image, W_conv1) + b_conv1)
 h_pool1 = max_pool_2x2(h_conv1)
@@ -70,9 +70,9 @@ b_fc2 = bias_variable([4])
 y_conv = tf.matmul(h_fc1,W_fc2) + b_fc2
 
 
+cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(y_conv,y_))
+train_step = tf.train.AdamOptimizer(1e-2).minimize(cross_entropy)
 
 correct_prediction = tf.equal(tf.argmax(y_conv,1), tf.argmax(y_,1))
 #type cast to float
 accuracy = tf.reduce_mean(tf.cast(correct_prediction,tf.float32))
-
-

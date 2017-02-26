@@ -72,5 +72,5 @@ function resample_single(canvas, width, height, resize_canvas) {
     }
 
     //draw
-    //ctx.putImageData(img2, 0, 0);
+    ctx.putImageData(img2, 0, 0);
 }
