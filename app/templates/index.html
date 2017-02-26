@@ -1,0 +1,72 @@
+<html>
+	<head>
+		LUGGAGE CLASSIFIER
+	</head>
+	<body>
+		<h1>{{message}}</h1>
+	</body>
+	<script src="/static/resize.js">
+	</script>
+	
+	<script src="/static/jquery.js">
+	</script>
+	<script type = 'text/javascript'>
+		var canvas = '';
+		var context = '';
+		var grey = [];
+		var data = [];
+		var img_data = [];
+		function readImage() {
+                if ( this.files && this.files[0] ) {
+                        var FR= new FileReader();
+                        FR.onload = function(e) {
+                        var img = new Image();
+                        img.onload = function() {
+                        context.drawImage(img, 0, 0);
+			var cnt = 0;
+			resample_single(canvas,64,64, true);
+                	img_data = Array.from(context.getImageData(0,0,canvas.width,canvas.height).data);
+			for(var i = 0;i < canvas.width; i = i + 1){
+				for(var j = 0; j < canvas.height; j = j + 1){
+					pixel = context.getImageData(i,j,1,1);
+					//img_data[cnt] = (pixel.data[0] + pixel.data[1] + pixel.data[2]) / 3
+					cnt = cnt + 1;
+				}
+			}			
+ 
+			var request = $.ajax({
+				type: 'GET',
+				data : {data : JSON.stringify(img_data) },
+				url : 'predict',
+			});	
+			request.done(function(msg){
+				alert(msg);
+			});
+			request.fail(function(msg){
+				alert(msg);
+				console.log(msg);
+			});		
+
+			};
+                img.src = e.target.result;
+               	
+		};       
+                        FR.readAsDataURL( this.files[0] );
+			}
+                }
+				
+		document.addEventListener('DOMContentLoaded', function() {
+			canvas = document.getElementById('canvas');
+			context = canvas.getContext("2d");
+			document.getElementById("img").addEventListener("change", readImage, false);
+		});
+
+	</script>
+	
+
+
+	<input type = "file" name = "img" id = 'img'/>
+	<canvas id="canvas" width="300" height="300">
+	</canvas>  
+
+</html>
