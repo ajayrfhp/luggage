@@ -12,8 +12,12 @@ def index():
 
 @app.route('/predict',methods = ['POST','GET'])
 def predict():
-	data = str(request.args.get('data'))
-	data = json.loads(data)
+	data = request.values.dicts[1]['data']
+	data = str(data)
+	data = data.replace('[','')
+	data = data.replace(']','')
+	data = data.split(',')
+	#data = data.encode('ascii','ignore')
 	data = np.array(data)
 	#return render_template('index.html', message = 'abd' )
 	return str(prediction.predict_class(data))

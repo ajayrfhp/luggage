@@ -18,6 +18,7 @@ import random
 # PREDICT OUTPUT
 
 def predict_class(img):
+	img = [ int(a) for a in img ]
 	sess = tf.Session()
 	# RESTORE TENSORFLOW MODEL AND DATA
 	from nn import *
@@ -31,11 +32,9 @@ def predict_class(img):
 	tf.set_random_seed(random_state)
 	y = {0:'backpacks', 1: 'bags', 2:'luggage',3:'travel_accessoires'}
 
-	
 	# READ AND PROCESS IMAGE
 	img = np.reshape(img,(64,64,4))
 	img = img[:,:,:3]
-	img = scipy.misc.imresize(img,(64,64,3))
 	img = np.mean(img, axis = -1)
 	img = img.reshape((1,img.shape[0] * img.shape[1]))
 	img = preprocessing.normalize(img)
